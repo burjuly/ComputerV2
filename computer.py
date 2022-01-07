@@ -10,8 +10,9 @@ def main():
     dic_vars, dic_func  = {}, {}
     while True:
         print(f'>', end='')
-        instruction = input()
+        instruction = input().lower()
 
+        print(instruction)
         if instruction == '':
             print('Empty input... Enter instruction')
 

@@ -6,11 +6,12 @@ def preparation(instruction):
     if instruction.count('=') != 1:
         print(f'Wrong number of "=" ')
         exit()
+    return(instruction)
 
 """ Проверяем что в строке только буквы, цифры, операции """
 def check_symbols(instruction):
     for i in instruction:
-        if not i.isalnum() and i not in '*/+-()[];:?^%':
+        if not i.isalnum() and i not in '*/+-()[];:?^%=':
             print(f'Invalid character found {i}')
             exit()
 
@@ -19,7 +20,10 @@ def validate_parts(parts):
     right_part = parts[1]
 
     for p in left_part:
-        re.findall('[]')
+        p = re.findall('[^a-z()]', p)
+        if p:
+            print(f'Invalid character {p} on the left side of the expression')
+            exit()
 
 def validation(instruction):
     instruction = preparation(instruction)
