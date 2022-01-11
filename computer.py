@@ -1,33 +1,35 @@
 import re
-import parsing as pars
-import validation as valid
+import parsing
+import validation
 
 def print_dic(dic):
     for i in dic:
         print(f'{i} : {dic[i]}')
 
 def main():
-    dic_vars, dic_func  = {}, {}
+    dic_vars = {}
     while True:
         print(f'>', end='')
         instruction = input().lower()
+        instruction = re.sub(r'\s+', '', instruction)
 
-        print(instruction)
         if instruction == '':
             print('Empty input... Enter instruction')
+            continue
 
         elif instruction == 'vars':
+            print('print vars')
             print_dic(dic_vars)
-
-        elif instruction == 'func':
-            print_dic(dic_func)
+            continue
 
         elif instruction == 'exit':
             break
+
+        res_validation = validation.validation(instruction)    
+        if res_validation == 0:
+            continue
         else:
-            print('validation')
-            valid.validation(instruction)
-            pars.parse_instruction(instruction)
+            parsing.parse_instruction(instruction)
 
 if __name__== "__main__":
     main()
