@@ -85,6 +85,6 @@ def parse_instruction(instruction, dic_vars):
     elif left == 'func':
         print()
     else:
-        print('SOLVE')
+        print()
         #solver.solve_expression(left_side, right_side, dic_vars)
     
