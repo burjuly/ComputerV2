@@ -1,12 +1,14 @@
 import re
 import solver
 
-def analyze_part(left_side):
+def analyze_part(part):
     ''' Левая часть содержит только буквы => это переменная'''
-    if len(re.findall(r'[^a-z]', left_side)) == 0:
+    if len(re.findall(r'[^a-z]', part)) == 0:
         return('var')
-    elif len(re.findall(r'[^a-z\(\)]', left_side)) == 0:
+    elif len(re.findall(r'[^a-z\(\)]', part)) == 0:
         return('func')
+    elif len(re.findall(r'[^0-9]', part)) == 0:
+        return('num')
     else:
         return('expression')
 
@@ -46,6 +48,7 @@ def update_dic(left_side, right_side, dic_vars):
         right_side_var(left_side, right_side, dic_vars)
        
     elif len(re.findall('[^0-9-\.]', right_side)) > 0:
+        print
         print('Wrong right side ')
 
     else:
@@ -68,14 +71,20 @@ def parse_instruction(instruction, dic_vars):
     left_side = parts[0]
     right_side = parts[1]
 
-    if analyze_part(left_side) == 'var':
-        print('В левой части переменная')
-        update_dic(left_side, right_side, dic_vars)
+    left = analyze_part(left_side)
+    right = analyze_part(right_side)
 
-    elif analyze_part(left_side) == 'func':
-        print('В левой части функция')
+    print(f'В левой части {left}')
+    print(f'В правой части {right}')
 
+    if left == 'var':
+        if right == 'expression':
+            right_side = solver.solve_expression(right_side, dic_vars)
+        else:
+            update_dic(left_side, right_side, dic_vars)
+    elif left == 'func':
+        print()
     else:
-        solver.solve_expression(left_side, right_side, dic_vars)
-    #dic_vars.get(left_side, False)
+        print('SOLVE')
+        #solver.solve_expression(left_side, right_side, dic_vars)
     

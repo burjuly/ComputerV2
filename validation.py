@@ -3,7 +3,7 @@ import re
 """ Проверяем что в строке только буквы, цифры, операции """
 def check_symbols(instruction):
     for i in instruction:
-        if not i.isalnum() and i not in '*/+-()[];:,?^%=':
+        if not i.isalnum() and i not in '*/+-()[];:.,?^%=':
             print(f'Invalid character found {i}')
             return(0)
     return(1)
