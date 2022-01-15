@@ -12,7 +12,7 @@ def main():
     dic_vars = {}
     while True:
         print(f'>', end='')
-        instruction = input().lower()
+        instruction = input()
         instruction = re.sub(r'\s+', '', instruction)
 
         if instruction == '':

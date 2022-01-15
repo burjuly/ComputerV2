@@ -1,14 +1,17 @@
 import re
 import solver
 
+
 def analyze_part(part):
     ''' Левая часть содержит только буквы => это переменная'''
-    if len(re.findall(r'[^a-z]', part)) == 0:
+    if len(re.findall(r'[^a-zA-Z]+', part)) == 0:
         return('var')
-    elif len(re.findall(r'[^a-z\(\)]', part)) == 0:
+    elif len(re.findall(r'[^a-zA-Z\(\)]', part)) == 0:
         return('func')
     elif len(re.findall(r'[^0-9]', part)) == 0:
         return('num')
+    elif re.findall(r'^[-]?[0-9]+\.[0-9]+$', part):
+        return('float')
     else:
         return('expression')
 
@@ -46,23 +49,29 @@ def update_dic(left_side, right_side, dic_vars):
     elif right_side.isalpha():
         print('В правой части переменная')
         right_side_var(left_side, right_side, dic_vars)
-       
-    elif len(re.findall('[^0-9-\.]', right_side)) > 0:
-        print
-        print('Wrong right side ')
 
-    else:
-        ''' Правая часть float число '''
-        if '.' in right_side:
-            if right_side_float(left_side, right_side, dic_vars):
-                print('В правой части float число')          
-                dic_vars.update({left_side: float(right_side)})  
-        else:
-            if right_side_int(left_side, right_side, dic_vars):
-                print('В правой части int число')
-                right_side = int(right_side)
-                dic_vars.update({left_side: int(right_side)})
-        print(right_side)       
+    elif re.findall('^[-]?[0-9]+$', right_side):
+        dic_vars.update({left_side: int(right_side)})
+
+    elif re.findall(r'^[-]?[0-9]+[.][0-9]+$', right_side):
+        dic_vars.update({left_side: float(right_side)}) 
+    
+       
+    #elif len(re.findall('[^0-9-\.]', right_side)) > 0:
+    #    print
+    #    print('Wrong right side ')
+    #else:
+    #    ''' Правая часть float число '''
+    #    if '.' in right_side:
+    #        if right_side_float(left_side, right_side, dic_vars):
+    #            print('В правой части float число')          
+    #            dic_vars.update({left_side: float(right_side)})  
+    #    else:
+    #        if right_side_int(left_side, right_side, dic_vars):
+    #            print('В правой части int число')
+    #            right_side = int(right_side)
+    #            dic_vars.update({left_side: int(right_side)})
+    #    print(right_side)       
 
 def parse_instruction(instruction, dic_vars):
     print('PARSING')
@@ -79,7 +88,10 @@ def parse_instruction(instruction, dic_vars):
 
     if left == 'var':
         if right == 'expression':
+            print(f'SOLVE RIGHT PART')
             right_side = solver.solve_expression(right_side, dic_vars)
+            print(f'RIGHT SIDE {right_side}')
+            update_dic(left_side, right_side, dic_vars)
         else:
             update_dic(left_side, right_side, dic_vars)
     elif left == 'func':

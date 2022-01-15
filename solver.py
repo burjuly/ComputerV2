@@ -43,7 +43,7 @@ def get_tokens(part):
             symbol = re.search('[0-9]+', part[i:]).group(0)
             i += len(symbol)
             #symbol = int(symbol)
-        elif symbol in '+, -, *, /, (, )':
+        elif symbol in '+, -, *, /, (, ), %, ^':
             i += 1
         result.append(symbol)
     print(f'AFTER GET TOKEN {result}')
@@ -102,9 +102,13 @@ def choose_operation(a, b, i):
         return(op_remainder(a, b))
     elif i == '^':
         return(op_power(a, b))
+    else:
+        print('Inpossible to solve')
+        exit()
 
 
 def from_rpn(rpn):
+    print('IN RPN')
     stack, result = [], []
 
     for i in rpn:
@@ -124,13 +128,12 @@ def from_rpn(rpn):
 2. Заменяем переменные на числа (если есть в словаре)
 3. Переводим в rpn
 4. Решаем rpn '''
-
 def solve_expression(part, dic_vars):
     part = get_tokens(part)
     tokens = substitute_numbers_in_vars(part, dic_vars)
     rpn = to_rpn(tokens)
     print(rpn)
-
     result = from_rpn(rpn)
     print(result)
+    return(str(result)) #чтобы в update_dic работал isalpha
     
