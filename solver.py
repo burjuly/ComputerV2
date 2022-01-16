@@ -33,6 +33,7 @@ def op_power(a, b):
 
 #TODO добавить парсинг float чисел
 def get_tokens(part):
+    print(f'GET TOKEN {part}')
     result = []
     i = 0
     while i < len(part):
@@ -53,6 +54,7 @@ def get_tokens(part):
 # Подставляет вместо букв переменные, которые есть в словаре
 def substitute_numbers_in_vars(part, dic_vars):
     result = []
+    print(f'ПОДСТАНОВКА ПЕРЕМЕННЫХ {part}')
     for i in part:
         if dic_vars.get(i):
             result.append(str(dic_vars[i]))
@@ -130,10 +132,16 @@ def from_rpn(rpn):
 3. Переводим в rpn
 4. Решаем rpn '''
 def solve_expression(part, dic_vars):
+    print('SOLVER')
     part = get_tokens(part)
+    print(f'PART {part}')
+
     tokens = substitute_numbers_in_vars(part, dic_vars)
+    print(f'TOKEN {tokens}')
+    
     rpn = to_rpn(tokens)
     print(rpn)
+    
     result = from_rpn(rpn)
     print(result)
     return(str(result)) #чтобы в update_dic работал isalpha
