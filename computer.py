@@ -31,7 +31,7 @@ def main():
         if res_validation == 0:
             continue
         else:
-            parsing.parse_instruction(instruction, dic_vars)
+            dic_vars = parsing.parse_instruction(instruction, dic_vars)
 
 if __name__== "__main__":
     main()

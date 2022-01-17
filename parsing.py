@@ -2,16 +2,16 @@ import re
 import solver
 import computerv1
 import functions
-
-def is_matrix_empty(part):
-    if re.findall(r'^([\[]{2})(.*)([\]]{2})$', part)[0][1] == '':
-        print('Empty matrix')
-        return True
-    return False
+import variables
+import validation
+import expression
+import matrix
 
 def analyze_part(part):
     print(f'PART {part}')
-    if re.findall(r'^[a-zA-Z]+$', part):
+    if part == '?':
+        return('question')
+    elif re.findall(r'^[a-zA-Z]+$', part):
         return('var')
     elif re.findall(r'^[a-zA-Z][/(][-]?[0-9]+[/)]$', part):
         return('func_num')
@@ -21,11 +21,11 @@ def analyze_part(part):
         return('int')
     elif re.findall(r'^[-]?[0-9]+[\.][0-9]+$', part):
         return('float')
-    #TODO
+    #TODO equation
     #elif len(re.findall(r'[^0-9a-zA-Z\(\)\+-\*\/^%]', part)) == 0:
     #    return('equation')
     elif re.findall(r'^[\[]{2}.*[\]]{2}$', part):
-        if is_matrix_empty(part):
+        if validation.is_matrix_empty(part):
             return
         return('matrix')
     elif len(re.findall(r'[^0-9a-zA-Z\+-|*^\/\(\)%]', part)) == 0:
@@ -34,32 +34,7 @@ def analyze_part(part):
         print('MISTAKES IN THE PART')
         exit()
 
-''' Левая часть переменная, правая - ? '''       
-def right_side_question(left_side, right_side, dic_vars):
-    if dic_vars.get(left_side, False):
-        res = dic_vars[left_side]
-        print(f'{res}')
-    else:
-        print(f'Variable {right_side} has not  been assigned a value yet ')
-
-def right_side_var(left_side, right_side, dic_vars):
-    if dic_vars.get(right_side, False):
-        dic_vars.update({left_side: dic_vars[right_side]})
-    else:
-        print(f'Variable {right_side} has not been assigned a value yet ')
-
-def right_side_float(left_side, right_side, dic_vars):
-    if len(re.findall(r'^[-]?[0-9]+[.][0-9]+$', right_side)) != 1:
-        print('Wrong right side')
-        return False
-    return True
-
-def right_side_int(left_side, right_side, dic_vars):
-    if len(re.findall(r'^[-]?[0-9]+$', right_side)) != 1:
-        print('Wrong right side')
-        return False
-    return True
-
+'''
 def update_dic(left_side, right_side, dic_vars):
     if right_side == '?':
         print('В правой части ?')
@@ -74,7 +49,7 @@ def update_dic(left_side, right_side, dic_vars):
 
     elif re.findall(r'^[-]?[0-9]+[.][0-9]+$', right_side):
         dic_vars.update({left_side: float(right_side)}) 
-    
+'''
 
 def parse_instruction(instruction, dic_vars):
     print('PARSING')
@@ -90,25 +65,21 @@ def parse_instruction(instruction, dic_vars):
 
     if left is None or right is None:
         return
-
+    
+    #TODO возращать обновленный словарь
     if left == 'var':
-        if right == 'expression':
-            print(f'SOLVE RIGHT PART')
-            right_side = solver.solve_expression(right_side, dic_vars)
-            print(f'RIGHT SIDE {right_side}')
-            update_dic(left_side, right_side, dic_vars)
-        else:
-            update_dic(left_side, right_side, dic_vars)
+        dic_vars = variables.left_var(left_side, right_side, right, dic_vars) 
     elif left == 'func_var':
-        functions.function_of_var(left_side, right_side, right, dic_vars)
+        dic_vars = functions.function_of_var(left_side, right_side, right, dic_vars)
     elif left == 'func_num':
-        functions.function_of_num(left_side, right_side, right, dic_vars)
-
-        
-
-
+        dic_vars = functions.function_of_num(left_side, right_side, right, dic_vars)
+    elif left == 'expression':
+        dic_vars = expression.left_side_expression(left_side, right_side, right, dic_vars)
+    elif left == 'matrix':
+        dic_vars = matrix.left_side_matrix(left_side, right_side, right, dic_vars)
 
     else:
         print()
         #solver.solve_expression(left_side, right_side, dic_vars)
+    return(dic_vars)
 

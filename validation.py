@@ -1,5 +1,11 @@
 import re
 
+def is_matrix_empty(part):
+    if re.findall(r'^([\[]{2})(.*)([\]]{2})$', part)[0][1] == '':
+        print('Empty matrix')
+        return True
+    return False
+    
 """ Проверяем что в строке только буквы, цифры, операции """
 def check_symbols(instruction):
     for i in instruction:
