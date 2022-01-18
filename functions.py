@@ -21,6 +21,7 @@ def function_of_var(left_side, right_side, right_side_type, dic_vars):
     if right_side_type == 'var':
         print()
     dic_vars.update({left_side: right_side})
+    return(dic_vars)
 
 def function_of_num(left_side, right_side, right_side_type, dic_vars):
     # Узнаем от какого аргумента рассчитать функцию
@@ -52,4 +53,5 @@ def function_of_num(left_side, right_side, right_side_type, dic_vars):
 
     result = solver.solve_expression(func_value, dic_vars)
     print(f'{left_side} = {result}')
-
+    
+    return(dic_vars)

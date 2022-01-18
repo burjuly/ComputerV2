@@ -77,7 +77,9 @@ def parse_instruction(instruction, dic_vars):
         dic_vars = expression.left_side_expression(left_side, right_side, right, dic_vars)
     elif left == 'matrix':
         dic_vars = matrix.left_side_matrix(left_side, right_side, right, dic_vars)
-
+    elif left == 'int':
+        if right == 'int':
+            print('Impossible assign a number to another number')
     else:
         print()
         #solver.solve_expression(left_side, right_side, dic_vars)

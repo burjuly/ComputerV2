@@ -3,7 +3,11 @@ import parsing
 import solver
 
 def left_var(left_side, right_side, right_side_type, dic_vars):
-    if right_side_type == 'question':
+    if right_side_type == 'func_var' or right_side_type == 'func_num':
+        print('It is impossible assign a function value to a variable')
+    elif left_side == 'i':
+        print('It is impossible assign a value for i')
+    elif right_side_type == 'question':
         if dic_vars.get(left_side, False):
             res = dic_vars[left_side]
             print(f'{res}')
