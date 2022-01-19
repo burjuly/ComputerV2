@@ -19,13 +19,18 @@ def validate_function(left_side, right_side, dic_vars):
     return True
 
 def function_of_var(left_side, right_side, right_side_type, dic_vars):
+
     if right_side_type == 'question':
+        tmp = re.findall(r'([a-zA-Z]+)([\(])([-]?[0-9]+)([\)])', left_side)[0]
+        func_name = tmp[0]
         if dic_vars.get(left_side) is None:
             print('This function has not yet been assigned a value')
             return
         else:
-            print(dic_vars[left_side])
+            dic_vars = function_of_num(left_side, right_side, right_side_type, dic_vars)
+            #print(dic_vars[left_side])
             return(dic_vars)
+    
     right_side = solver.substitute_numbers_in_vars(right_side, dic_vars)
     right_side = "".join(map(str,right_side))
     print(f'RIGHT AFTER {right_side}')
@@ -43,6 +48,10 @@ def function_of_num(left_side, right_side, right_side_type, dic_vars):
     tmp = re.findall(r'([a-zA-Z]+)([\(])([-]?[0-9]+)([\)])', left_side)[0]
     func_name = tmp[0]
     arg = tmp[2]
+
+    if arg.isalpha():
+        left_side = solver.substitute_numbers_in_vars(left_side, dic_vars)
+        left_side = "".join(map(str, left_side))
     print(f'РАССЧИТАТЬ ЗНАЧЕНИЕ ФУНКЦИИ ОТ АРГУМЕНТА: {arg}')
     func_value = ''
     for k in dic_vars: # По ключам словаря ищем нужную функцию
