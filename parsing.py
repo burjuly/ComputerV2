@@ -21,7 +21,11 @@ def analyze_part(part):
         return('int')
     elif re.findall(r'^[-]?[0-9]+[\.][0-9]+$', part):
         return('float')
-    #TODO equation
+    elif 'i' in part:
+        return('complex')
+    elif re.findall(r'^(\d+)([\*])(\[)(.*)(\])$', part):
+        return('num_mult_matrix')
+            #TODO equation
     #elif len(re.findall(r'[^0-9a-zA-Z\(\)\+-\*\/^%]', part)) == 0:
     #    return('equation')
     elif re.findall(r'^[\[]{2}.*[\]]{2}$', part):
