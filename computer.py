@@ -24,6 +24,10 @@ def main():
             print_dic(dic_vars)
             continue
 
+        elif instruction == 'clear':
+            dic_vars.clear()
+            continue
+
         elif instruction == 'exit':
             break
 

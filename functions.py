@@ -4,20 +4,34 @@ import parsing
 
 # Проверяем что в правой части функции тот же аргумент, что в левой
 def validate_function(left_side, right_side, dic_vars):
+    if re.findall(r'^([a-zA-Z])([\*])(\[)(.*)(\])$', right_side):
+        print(right_side)
+        dic_vars.update({left_side: right_side})
+        return(dic_vars)
     arg = re.findall(r'([a-zA-Z]+)([\(])([a-zA-Z]+)([\)])', left_side)[0][2]
     tokens = solver.get_tokens(right_side)
     tokens = solver.substitute_numbers_in_vars(right_side, dic_vars)
     vars = re.findall(r'[a-zA-Z]', right_side)
     for i in vars:
         if i not in arg and i != 'i':
-            #TODO исправить
             print(f'The left side can only contain a variable {arg}, numbers and operations')
             return
     return True
 
 def function_of_var(left_side, right_side, right_side_type, dic_vars):
+    if right_side_type == 'question':
+        if dic_vars.get(left_side) is None:
+            print('This function has not yet been assigned a value')
+            return
+        else:
+            print(dic_vars[left_side])
+            return(dic_vars)
+    right_side = solver.substitute_numbers_in_vars(right_side, dic_vars)
+    right_side = "".join(map(str,right_side))
+    print(f'RIGHT AFTER {right_side}')
     if validate_function(left_side, right_side, dic_vars) is None:
         return
+
     #TODO Solve right side 
     if right_side_type == 'var':
         print()

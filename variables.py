@@ -8,6 +8,9 @@ def left_var(left_side, right_side, right_side_type, dic_vars):
         dic_vars = matrix.right_side_matrix(left_side, right_side, right_side_type, dic_vars)
     elif right_side_type == 'num_mult_matrix':
         dic_vars = matrix.num_mult_matrix(left_side, right_side, right_side_type, dic_vars)
+    elif right_side_type ==  'var_mult_matrix':
+        dic_vars = matrix.var_mult_matrix(left_side, right_side, right_side_type, dic_vars)
+
     elif right_side_type == 'complex':
         dic_vars.update({left_side: right_side})
         print(right_side)

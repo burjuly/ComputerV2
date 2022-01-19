@@ -25,6 +25,8 @@ def analyze_part(part):
         return('complex')
     elif re.findall(r'^(\d+)([\*])(\[)(.*)(\])$', part):
         return('num_mult_matrix')
+    elif re.findall(r'^([a-zA-Z])([\*])(\[)(.*)(\])$', part):
+        return('var_mult_matrix')
             #TODO equation
     #elif len(re.findall(r'[^0-9a-zA-Z\(\)\+-\*\/^%]', part)) == 0:
     #    return('equation')
@@ -37,23 +39,6 @@ def analyze_part(part):
     else:
         print('MISTAKES IN THE PART')
         exit()
-
-'''
-def update_dic(left_side, right_side, dic_vars):
-    if right_side == '?':
-        print('В правой части ?')
-        right_side_question(left_side, right_side, dic_vars)
-
-    elif right_side.isalpha():
-        print('В правой части переменная')
-        right_side_var(left_side, right_side, dic_vars)
-
-    elif re.findall('^[-]?[0-9]+$', right_side):
-        dic_vars.update({left_side: int(right_side)})
-
-    elif re.findall(r'^[-]?[0-9]+[.][0-9]+$', right_side):
-        dic_vars.update({left_side: float(right_side)}) 
-'''
 
 def parse_instruction(instruction, dic_vars):
     print('PARSING')
