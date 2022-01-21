@@ -1,4 +1,5 @@
 import re
+import solver
 
 def print_matrix(matrix):
     matrix = matrix.split(';')
@@ -49,7 +50,35 @@ def var_mult_matrix(left_side, right_side, right_side_type, dic_vars):
             result.append(dic_vars[i])
         else:
             result.append(i)
-
-    result = "".join(map(str,result)) 
+    result = "".join(map(str, result)) 
     print(f"RESULT {result}")
     return(num_mult_matrix(left_side, result, right_side_type, dic_vars))
+
+def prepare_matrix(matrix):
+    matrix = matrix[1:-1].split(';')
+    result = []
+    for i in matrix:
+        row = []
+        tmp = i[1:-1].split(',')
+        for t in tmp:
+            row.append(int(t))
+        result.append(row)
+    return(result)
+
+def matrix_mult_matrix(left_side, right_side, right, dic_vars):
+    left_side = solver.substitute_numbers_in_vars(left_side, dic_vars)
+    A = left_side[0]
+    B = left_side[-1]
+    
+    A = prepare_matrix(A)
+    B = prepare_matrix(B)
+
+    n = len(A)
+    ans = [[0] * n for i in range(n)]
+    for i in range(n):
+        for j in range(n):
+            ans[i][j] = sum((A[i][v] * B[v][j] for v in range(n)))
+
+    for a in ans:
+        print(a)
+    return(dic_vars)

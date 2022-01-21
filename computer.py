@@ -36,6 +36,7 @@ def main():
             continue
         else:
             dic_vars = parsing.parse_instruction(instruction, dic_vars)
+            print(f'DIC VARS IN MAIN {dic_vars}')
 
 if __name__== "__main__":
     main()

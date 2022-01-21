@@ -18,12 +18,6 @@ def op_sub(a, b):
     return(a - b)
 
 def op_mult(a, b):
-    result = a * b
-    t_a = type(a)
-    t_b = type(b)
-    print(f'a = {t_a}')
-    print(f'b = {t_b}')
-    print(f'res = {result}')
     return(a * b)
 
 def op_div(a, b):
@@ -45,7 +39,7 @@ def op_power(a, b):
 
 #TODO добавить парсинг float чисел
 def get_tokens(part):
-    print(f'GET TOKEN {part}')
+    #print(f'GET TOKEN {part}')
     result = []
     i = 0
     while i < len(part):
@@ -66,19 +60,19 @@ def get_tokens(part):
         elif symbol in '+, -, *, (, ), %, ^':
             i += 1
         result.append(symbol)
-    print(f'AFTER GET TOKEN {result}')
+    #print(f'AFTER GET TOKEN {result}')
     return(result)
 
 # Подставляет вместо букв переменные, которые есть в словаре
 def substitute_numbers_in_vars(part, dic_vars):
     result = []
-    print(f'ПОДСТАНОВКА ПЕРЕМЕННЫХ {part}')
+    #print(f'ПОДСТАНОВКА ПЕРЕМЕННЫХ {part}')
     for i in part:
         if dic_vars.get(i):
             result.append(str(dic_vars[i]))
         else:
             result.append(i)
-    print(f'RESULT AFTER CHANGE VARS {result}')
+    #print(f'RESULT AFTER CHANGE VARS {result}')
     return(result)
 
 def to_rpn(str):
@@ -124,7 +118,7 @@ def choose_operation(a, b, i):
     elif i == '%':
         return(op_remainder(a, b))
     elif i == '^':
-        if 'i' in a:
+        if 'i' in str(a):
             return(complex_num.power_for_complex(a, b))
         return(op_power(a, b))
     else:
@@ -145,8 +139,6 @@ def from_rpn(rpn):
         if i.isalpha() or i[0].isdigit() or i == 'i':
             stack.append(i)
         elif i in ["+", "-", "*", "//", "/", "%", "^"]:
-            #Проверить что из стека достаем число
-            #Буква ?
             b = stack.pop()
             a = stack.pop()
             a, b = to_int_or_float(a, b)
@@ -155,17 +147,14 @@ def from_rpn(rpn):
     return(stack[0])
 
 def solve_expression(part, dic_vars):
-    print('SOLVER')
     part = get_tokens(part)
-    #print(f'PART {part}')
-
     tokens = substitute_numbers_in_vars(part, dic_vars)
-    print(f'TOKEN {tokens}')
+    #print(f'TOKEN {tokens}')
     
     rpn = to_rpn(tokens)
-    print(rpn)
+    #print(f'AFTER RPN {rpn}')
     
     result = from_rpn(rpn)
-    #print(result)
+    #print(f'RESULT IN SOLVERRR {result}')
     return(str(result)) #чтобы в update_dic работал isalpha
     

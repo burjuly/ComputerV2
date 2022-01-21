@@ -8,7 +8,6 @@ import expression
 import matrix
 
 def analyze_part(part):
-    print(f'PART {part}')
     if part == '?':
         return('question')
     elif re.findall(r'^[a-zA-Z]+$', part):
@@ -27,7 +26,10 @@ def analyze_part(part):
         return('num_mult_matrix')
     elif re.findall(r'^([a-zA-Z])([\*])(\[)(.*)(\])$', part):
         return('var_mult_matrix')
-            #TODO equation
+    elif re.findall(r'^([\w])([\*]{2})([\w])$', part):
+        return('matrix_mult_matrix')
+    elif re.findall(r'^[a-zA-Z][\?]$', part):
+        return('var_question')
     #elif len(re.findall(r'[^0-9a-zA-Z\(\)\+-\*\/^%]', part)) == 0:
     #    return('equation')
     elif re.findall(r'^[\[]{2}.*[\]]{2}$', part):
@@ -39,6 +41,11 @@ def analyze_part(part):
     else:
         print('MISTAKES IN THE PART')
         exit()
+
+def del_tmp_vars(dic_vars):
+    if 'i' in dic_vars:
+        dic_vars.pop('i')
+    return(dic_vars)
 
 def parse_instruction(instruction, dic_vars):
     print('PARSING')
@@ -60,12 +67,18 @@ def parse_instruction(instruction, dic_vars):
         dic_vars = variables.left_var(left_side, right_side, right, dic_vars) 
     elif left == 'func_var':
         dic_vars = functions.function_of_var(left_side, right_side, right, dic_vars)
+        dic_vars = del_tmp_vars(dic_vars)
     elif left == 'func_num':
+        if right == 'var_question':
+            computerv1.check_eqution(left_side, right_side, right, dic_vars)
         dic_vars = functions.function_of_num(left_side, right_side, right, dic_vars)
+        dic_vars = del_tmp_vars(dic_vars)
     elif left == 'expression':
         dic_vars = expression.left_side_expression(left_side, right_side, right, dic_vars)
     elif left == 'matrix':
         dic_vars = matrix.left_side_matrix(left_side, right_side, right, dic_vars)
+    elif left == 'matrix_mult_matrix':
+        dic_vars = matrix.matrix_mult_matrix(left_side, right_side, right, dic_vars)
     elif left == 'int':
         if right == 'int':
             print('Impossible assign a number to another number')

@@ -184,7 +184,7 @@ def check_symbols(eq):
         print('Invalid characters in string')
         exit()
 
-def main():
+def computerv1():
     parser = argparse.ArgumentParser(description="Solve equation")
     parser.add_argument("-d", dest="detail", action='store_true')
     parser.add_argument("-i", dest="irrational", action='store_true')
@@ -207,5 +207,6 @@ def main():
     coef = print_reduce_form(dic)
     solve_eq(coef, args)
 
-if __name__== "__main__":
-    main()
+
+def check_eqution(left_side, right_side, right, dic_vars):
+    
