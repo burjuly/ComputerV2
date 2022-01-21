@@ -1,22 +1,7 @@
 import re
-import argparse
 
-def print_irrational_result(b, c):
-    c = c * (-1)
-    if c < 0 and b < 0:
-        c *= -1
-        b *= -1
-        print(f'{int(c)} / {int(b)}')
-    elif c < 0 and b > 0:
-        c *= -1
-        print(f'- {int(c)} / {int(b)}')
-    elif c > 0 and b < 0:
-        b *= -1
-        print(f'- {int(c)} / {int(b)}')
-    else:
-        print(f'{int(c)} / {int(b)}')
 
-def solve_line_eq(coef, args):
+def solve_line_eq(coef):
     b = coef[1]
     c = coef[2]
     print('Polynomial degree: 1')
@@ -25,10 +10,7 @@ def solve_line_eq(coef, args):
     elif b == 0 and c != 0:
         print('The equation has no solutions')
     elif b != 0:
-        if args.irrational:
-            print_irrational_result(b, c)
-        else:
-            print(float((-1) * c / b))
+        print(float((-1) * c / b))
 
 def sqrt(D):
     x = 1
@@ -58,17 +40,12 @@ def display_positive_discriminant(a, b, c, D):
     print((-b + sq) / (2 * a))
     print((-b - sq) / (2 * a))
 
-def solve_quadratic_eq(coef, args):
+def solve_quadratic_eq(coef):
     print('Polynomial degree: 2')
     a = coef[0]
     b = coef[1]
     c = coef[2]
     D = (b ** 2) - (4 * a * c)
-    if args.detail:
-        print('D = b ^ 2 - 4 * a * c')
-        print('Discriminant:', D)
-        print('X1 = (-b + sqrt(D)) / (2 * a)')
-        print('X2 = (-b - sqrt(D)) / (2 * a)')
     if D < 0:
         display_negative_discriminant(a, b, c, D)
     elif D == 0:
@@ -76,11 +53,11 @@ def solve_quadratic_eq(coef, args):
     else:
         display_positive_discriminant(a, b, c, D)
 
-def solve_eq(coef, args):
+def solve_eq(coef):
     if coef[0] == 0:
-        solve_line_eq(coef, args)
+        solve_line_eq(coef)
     else:
-        solve_quadratic_eq(coef, args)
+        solve_quadratic_eq(coef)
 
 def get_variable_coefficient(i):
     if '*' not in i:
@@ -184,18 +161,8 @@ def check_symbols(eq):
         print('Invalid characters in string')
         exit()
 
-def computerv1():
-    parser = argparse.ArgumentParser(description="Solve equation")
-    parser.add_argument("-d", dest="detail", action='store_true')
-    parser.add_argument("-i", dest="irrational", action='store_true')
-    args = parser.parse_args()
-    
-    print('Enter equation: ', end='')
-    equation = input().upper()
-    if not equation:
-        print('Empty input')
-        exit()
-    equation = re.sub(r'\s+', '', equation)
+def computerv1(equation):
+    equation = equation.upper()
     equation = re.sub(r'\b[-]', '+-', equation).replace('=', '+=+')
     if len(re.findall('=', equation)) != 1:
         print('Wrong number of characters "=" ')
@@ -205,8 +172,20 @@ def computerv1():
     dic = validation(equation)
     make_decision(dic)
     coef = print_reduce_form(dic)
-    solve_eq(coef, args)
+    solve_eq(coef)
 
 
 def check_eqution(left_side, right_side, right, dic_vars):
+    if left_side in dic_vars:
+        left_side = dic_vars[left_side]
+    else:
+        print('Unable to find function in dictionary')
+        return(dic_vars)
+    right_side = re.findall(r'[a-zA-Z]', right_side)[0]
+    if right_side in dic_vars:
+        right_side = dic_vars[right_side]
+    equation = left_side + '=' + right_side
+    computerv1(equation)
+    return(dic_vars)
+
     

@@ -10,7 +10,6 @@ def left_var(left_side, right_side, right_side_type, dic_vars):
         dic_vars = matrix.num_mult_matrix(left_side, right_side, right_side_type, dic_vars)
     elif right_side_type ==  'var_mult_matrix':
         dic_vars = matrix.var_mult_matrix(left_side, right_side, right_side_type, dic_vars)
-
     elif right_side_type == 'complex':
         dic_vars.update({left_side: right_side})
         print(right_side)
@@ -37,10 +36,8 @@ def left_var(left_side, right_side, right_side_type, dic_vars):
         print(right_side)
     elif right_side_type == 'expression':
         right_side = solver.solve_expression(right_side, dic_vars)
-        dic_vars.update({left_side: right_side}) #TODO right side сделать str?
+        dic_vars.update({left_side: right_side})
         print(right_side)
-        #update_dic(left_side, right_side, dic_vars)
     elif right_side_type == 'matrix':
         print()
-        #matrix.right_matrix()
     return(dic_vars)

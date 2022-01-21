@@ -112,11 +112,11 @@ $./computorv2
 
 Часть из computorV1
 $./computorv2
-> funA(x) = x^2 + 2x + 1
+> f(x) = x^2 + 2x + 1
 x^2 + 2x + 1
 > y = 0
 0
-> funA(x) = y ?
+> f(x) = y ?
 x^2 + 2x + 1 = 0
 Une solution sur R :
 -1

@@ -14,29 +14,22 @@ def main():
         print(f'>', end='')
         instruction = input()
         instruction = re.sub(r'\s+', '', instruction)
-
         if instruction == '':
             print('Empty input... Enter instruction')
             continue
-
         elif instruction == 'vars':
-            print('print vars')
             print_dic(dic_vars)
             continue
-
         elif instruction == 'clear':
             dic_vars.clear()
             continue
-
         elif instruction == 'exit':
             break
-
         res_validation = validation.validation(instruction)    
         if res_validation == 0:
             continue
         else:
             dic_vars = parsing.parse_instruction(instruction, dic_vars)
-            print(f'DIC VARS IN MAIN {dic_vars}')
 
 if __name__== "__main__":
     main()

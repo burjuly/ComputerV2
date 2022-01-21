@@ -14,10 +14,8 @@ def validate_function(left_side, right_side, dic_vars):
     return True
 
 def is_right_side_matrix(left_side, right_side, right_side_type, dic_vars):
-    ''' если в правой части матрица'''
     right_side = solver.substitute_numbers_in_vars(right_side, dic_vars)
     right_side = "".join(map(str,right_side))
-    print(f'RIGHT AFTER {right_side}')
     if re.findall(r'^([a-zA-Z])([\*])(\[)(.*)(\])$', right_side): 
         print(right_side)
         dic_vars.update({left_side: right_side})
@@ -37,13 +35,10 @@ def function_of_var(left_side, right_side, right_side_type, dic_vars):
         dic_vars.update({left_side: right_side})
         return(dic_vars)
     elif right_side_type == 'question':
-        print(f'IN FUNCTION VARS')
         tmp = re.split(r'[\(|\)]', left_side)
         func_name = tmp[0]
         func_arg = tmp[1]
-        func_value, func_var = get_function_from_dic(dic_vars, func_name )
-        print(f'FUNC_VALUE {func_value}, func_var = {func_var}')
-        print(f'FUNC_ARG {func_arg}')
+        func_value, func_var = get_function_from_dic(dic_vars, func_name)
         if func_value is None:
             print('Function not found in dictionary. Unable to calculate value from unknown function')
             return(dic_vars)

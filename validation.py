@@ -6,7 +6,6 @@ def is_matrix_empty(part):
         return True
     return False
     
-""" Проверяем что в строке только буквы, цифры, операции """
 def check_symbols(instruction):
     if not instruction.isascii():
         print('Only ASCII characters are allowed')

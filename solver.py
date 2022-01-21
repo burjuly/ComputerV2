@@ -36,8 +36,6 @@ def op_power(a, b):
     return(a ** b)
 
 
-
-#TODO добавить парсинг float чисел
 def get_tokens(part):
     #print(f'GET TOKEN {part}')
     result = []
@@ -133,7 +131,6 @@ def to_int_or_float(a, b):
     return(a, b)
 
 def from_rpn(rpn):
-    print('IN RPN')
     stack, result = [], []
     for i in rpn:
         if i.isalpha() or i[0].isdigit() or i == 'i':
@@ -149,12 +146,6 @@ def from_rpn(rpn):
 def solve_expression(part, dic_vars):
     part = get_tokens(part)
     tokens = substitute_numbers_in_vars(part, dic_vars)
-    #print(f'TOKEN {tokens}')
-    
-    rpn = to_rpn(tokens)
-    #print(f'AFTER RPN {rpn}')
-    
+    rpn = to_rpn(tokens)    
     result = from_rpn(rpn)
-    #print(f'RESULT IN SOLVERRR {result}')
-    return(str(result)) #чтобы в update_dic работал isalpha
-    
+    return(str(result))

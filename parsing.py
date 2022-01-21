@@ -6,10 +6,13 @@ import variables
 import validation
 import expression
 import matrix
+import plots
 
 def analyze_part(part):
     if part == '?':
         return('question')
+    elif re.findall('plot', part):
+        return('plot')
     elif re.findall(r'^[a-zA-Z]+$', part):
         return('var')
     elif re.findall(r'^[a-zA-Z][/(][-]?[0-9]+[/)]$', part):
@@ -30,14 +33,13 @@ def analyze_part(part):
         return('matrix_mult_matrix')
     elif re.findall(r'^[a-zA-Z][\?]$', part):
         return('var_question')
-    #elif len(re.findall(r'[^0-9a-zA-Z\(\)\+-\*\/^%]', part)) == 0:
-    #    return('equation')
     elif re.findall(r'^[\[]{2}.*[\]]{2}$', part):
         if validation.is_matrix_empty(part):
             return
         return('matrix')
     elif len(re.findall(r'[^0-9a-zA-Z\+-|*^\/\(\)%]', part)) == 0:
         return('expression')
+
     else:
         print('MISTAKES IN THE PART')
         exit()
@@ -66,11 +68,12 @@ def parse_instruction(instruction, dic_vars):
     if left == 'var':
         dic_vars = variables.left_var(left_side, right_side, right, dic_vars) 
     elif left == 'func_var':
-        dic_vars = functions.function_of_var(left_side, right_side, right, dic_vars)
-        dic_vars = del_tmp_vars(dic_vars)
-    elif left == 'func_num':
         if right == 'var_question':
-            computerv1.check_eqution(left_side, right_side, right, dic_vars)
+            dic_vars = computerv1.check_eqution(left_side, right_side, right, dic_vars)
+        else:
+            dic_vars = functions.function_of_var(left_side, right_side, right, dic_vars)
+            dic_vars = del_tmp_vars(dic_vars)
+    elif left == 'func_num':
         dic_vars = functions.function_of_num(left_side, right_side, right, dic_vars)
         dic_vars = del_tmp_vars(dic_vars)
     elif left == 'expression':
@@ -82,6 +85,8 @@ def parse_instruction(instruction, dic_vars):
     elif left == 'int':
         if right == 'int':
             print('Impossible assign a number to another number')
+    elif left == 'plot':
+        plots.paint_plot(left_side, right_side, right, dic_vars)
     else:
         print()
         #solver.solve_expression(left_side, right_side, dic_vars)
